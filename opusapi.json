@@ -1,0 +1,115 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Sales API",
+    "description": "API for creating a new sale.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virajgarud.portal.swaggerhub.com/services/api/proxy/81ccbc14-db2b-46ac-9b9e-f2ae872bee13/https://testapi.auth1.avalara.com/ws/rest/sales/new/{offerCode}",
+      "description": "API proxy server"
+    }
+  ],
+  "paths": {
+    "/ws/rest/sales/new/{offerCode}": {
+      "post": {
+        "summary": "Create a new sale",
+        "description": "This endpoint allows the creation of a new sale for the given offer code.",
+        "operationId": "createSale",
+        "parameters": [
+          {
+            "name": "offerCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The unique offer code for the sale."
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "customerAccountId": {
+                    "type": "string",
+                    "description": "The customer account ID to associate with the sale."
+                  }
+                },
+                "required": ["customerAccountId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sale created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Status of the operation"
+                    },
+                    "saleId": {
+                      "type": "string",
+                      "description": "ID of the created sale"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid input or missing required fields"
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred"
+          }
+        },
+        "headers": {
+          "Accept": {
+            "description": "Accept header indicating that the response should be in JSON format.",
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            }
+          },
+          "Content-Type": {
+            "description": "Content-Type header for the request, indicating that the body content is JSON.",
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            }
+          },
+          "secure": {
+            "description": "Header for security purposes (to be defined by the service)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SaleRequest": {
+        "type": "object",
+        "properties": {
+          "customerAccountId": {
+            "type": "string",
+            "description": "The customer account ID associated with the sale."
+          }
+        },
+        "required": ["customerAccountId"]
+      }
+    }
+  }
+}
