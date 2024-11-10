@@ -1,436 +1,424 @@
-openapi: 3.0.1
-info:
-  title: IPS Sales API
-  description: |
-    API to enable sales automation
-    Hosts:
-    - Production: api.auth1.avalara.com/ws/rest/sales
-    - Test: testapi.auth1.avalara.com/ws/rest/sales
-  version: v1
-servers:
-  - url: https://testapi.auth1.avalara.com/ws/rest/sales
-  - url: https://api.auth1.avalara.com/ws/rest/sales
-paths:
-  /connector:
-    post:
-      tags:
-        - connector
-      summary: Create SF Connector
-      description: Create Connector for ARA/MRA Customer
-      parameters:
-        - name: secure
-          in: header
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateAPIResponse'
-          x-examples:
-            axios:
-              value: |
-                const axios = require('axios');
-                axios.post('https://testapi.auth1.avalara.com/ws/rest/sales/connector', {}, {
-                  headers: {
-                    'secure': 'your-secure-token-here'
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "IPS Sales API",
+    "description": "API to enable sales automation\nHosts:\n- Production: api.auth1.avalara.com/ws/rest/sales\n- Test: testapi.auth1.avalara.com/ws/rest/sales",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://testapi.auth1.avalara.com/ws/rest/sales"
+    },
+    {
+      "url": "https://api.auth1.avalara.com/ws/rest/sales"
+    }
+  ],
+  "paths": {
+    "/connector": {
+      "post": {
+        "tags": [
+          "connector"
+        ],
+        "summary": "Create SF Connector",
+        "description": "Create Connector for ARA/MRA Customer",
+        "parameters": [
+          {
+            "name": "secure",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateAPIResponse"
+                }
+              }
+            },
+            "x-examples": {
+              "axios": {
+                "value": "const axios = require('axios');\naxios.post('https://testapi.auth1.avalara.com/ws/rest/sales/connector', {}, {\n  headers: {\n    'secure': 'your-secure-token-here'\n  }\n})\n.then(response => {\n  console.log(response.data);\n})\n.catch(error => {\n  console.error(error);\n});"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/new/{offerCode}": {
+      "post": {
+        "tags": [
+          "new"
+        ],
+        "summary": "Sell offer to customer",
+        "description": "Endpoint to sell a distinct offer to an existing customer by SF account ID",
+        "parameters": [
+          {
+            "name": "offerCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-correlation-id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "secure",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/sendToQueueOffercode"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/onlineSalesApiMasterResponse"
+                }
+              }
+            },
+            "x-examples": {
+              "axios": {
+                "value": "const axios = require('axios');\naxios.post('https://testapi.auth1.avalara.com/ws/rest/sales/new/{offerCode}', {\n  // request body content\n  avataxId: 'example-avatax-id',\n  productCode: 'example-product-code',\n}, {\n  headers: {\n    'x-correlation-id': 'your-correlation-id',\n    'secure': 'your-secure-token'\n  }\n})\n.then(response => {\n  console.log(response.data);\n})\n.catch(error => {\n  console.error(error);\n});"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/offercode/config": {
+      "get": {
+        "tags": [
+          "offercode"
+        ],
+        "summary": "Get List of Available Offer Codes",
+        "parameters": [
+          {
+            "name": "secure",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/offerConfigResponse"
+                }
+              }
+            },
+            "x-examples": {
+              "axios": {
+                "value": "const axios = require('axios');\naxios.get('https://testapi.auth1.avalara.com/ws/rest/sales/offercode/config', {\n  headers: {\n    'secure': 'your-secure-token-here'\n  }\n})\n.then(response => {\n  console.log(response.data);\n})\n.catch(error => {\n  console.error(error);\n});"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/offercode/sold/{accountId}": {
+      "get": {
+        "tags": [
+          "offercode"
+        ],
+        "summary": "Get offers sold to account",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "secure",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/accountOfferCodeResponse"
+                }
+              }
+            },
+            "x-examples": {
+              "axios": {
+                "value": "const axios = require('axios');\naxios.get('https://testapi.auth1.avalara.com/ws/rest/sales/offercode/sold/{accountId}', {\n  headers: {\n    'secure': 'your-secure-token'\n  }\n})\n.then(response => {\n  console.log(response.data);\n})\n.catch(error => {\n  console.error(error);\n});"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          },
+          "503": {
+            "$ref": "#/components/responses/503"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateAPIResponse": {
+        "type": "object",
+        "properties": {
+          "Connector": {
+            "type": "object",
+            "properties": {
+              "author": { "type": "string" },
+              "avalaraProduct": { "type": "string" },
+              "cpqId": { "type": "string" },
+              "customerAccountId": { "type": "string" },
+              "managedBy": { "type": "string" },
+              "name": { "type": "string" },
+              "opportunityId": { "type": "string" },
+              "opportunityLineItemId": { "type": "string" },
+              "partnerTeamGrouping": { "type": "string" },
+              "recordTypeId": { "type": "string" },
+              "vibrancy": { "type": "string" }
+            }
+          },
+          "Message": { "type": "string" },
+          "Success": { "type": "string" }
+        }
+      },
+      "onlineSalesApiMasterResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" }
+            }
+          },
+          "message": { "type": "string" }
+        }
+      },
+      "offerConfigResponse": {
+        "type": "object",
+        "properties": {
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "offerId": { "type": "string" },
+                "Term": { "type": "string" },
+                "type": { "type": "string" },
+                "interestInProductsServices": { "type": "string" },
+                "methodOfContact": { "type": "string" },
+                "offer": { "type": "string" },
+                "currencyISOCode": { "type": "string" },
+                "renewalTerm": { "type": "number" },
+                "lineitems": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "pricebookEntryId": { "type": "string" },
+                      "billingPeriod": { "type": "string" },
+                      "productRatePlanTierId": { "type": "string" },
+                      "productName": { "type": "string" },
+                      "tier": { "type": "number" }
+                    }
                   }
-                })
-                .then(response => {
-                  console.log(response.data);
-                })
-                .catch(error => {
-                  console.error(error);
-                });
-
-  /new/{offerCode}:
-    post:
-      tags:
-        - new
-      summary: Sell offer to customer
-      description: Endpoint to sell a distinct offer to an existing customer by SF account ID
-      parameters:
-        - name: offerCode
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: x-correlation-id
-          in: header
-          schema:
-            type: string
-        - name: secure
-          in: header
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/sendToQueueOffercode'
-        required: true
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/onlineSalesApiMasterResponse'
-          x-examples:
-            axios:
-              value: |
-                const axios = require('axios');
-                axios.post('https://testapi.auth1.avalara.com/ws/rest/sales/new/{offerCode}', {
-                  // request body content
-                  avataxId: 'example-avatax-id',
-                  productCode: 'example-product-code',
-                }, {
-                  headers: {
-                    'x-correlation-id': 'your-correlation-id',
-                    'secure': 'your-secure-token'
+                }
+              }
+            }
+          }
+        }
+      },
+      "sendToQueueOffercode": {
+        "type": "object",
+        "properties": {
+          "addItems": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productCode": { "type": "string" }
+              }
+            }
+          },
+          "avataxId": { "type": "string" },
+          "connectorId": { "type": "string" },
+          "currencyCode": { "type": "string" },
+          "customerAccountId": { "type": "string" },
+          "discountPercent": { "type": "number", "format": "float" },
+          "freeMonths": { "type": "string" },
+          "includeSupport": { "type": "string" },
+          "marketingContext": {
+            "type": "object",
+            "properties": {
+              "opportunity": {
+                "type": "object",
+                "properties": {
+                  "campaignId": { "type": "string" },
+                  "interestInProductsServices": { "type": "string" },
+                  "leadSource": { "type": "string" },
+                  "methodOfContact": { "type": "string" },
+                  "partnerId": { "type": "string" },
+                  "productsOfInterest": { "type": "string" },
+                  "webProperty": { "type": "string" }
+                }
+              },
+              "account": {
+                "type": "object",
+                "properties": {
+                  "campaignId": { "type": "string" },
+                  "interestInProductsServices": { "type": "string" },
+                  "leadSource": { "type": "string" },
+                  "methodOfContact": { "type": "string" },
+                  "partnerId": { "type": "string" },
+                  "productsOfInterest": { "type": "string" },
+                  "webProperty": { "type": "string" }
+                }
+              },
+              "contact": {
+                "type": "object",
+                "properties": {
+                  "campaignId": { "type": "string" },
+                  "interestInProductsServices": { "type": "string" },
+                  "leadSource": { "type": "string" },
+                  "methodOfContact": { "type": "string" },
+                  "partnerId": { "type": "string" },
+                  "productsOfInterest": { "type": "string" },
+                  "webProperty": { "type": "string" }
+                }
+              }
+            }
+          },
+          "organizationId": { "type": "string" },
+          "parentAvataxId": { "type": "string" },
+          "parentCustomerAccountId": { "type": "string" },
+          "paymentMethodId": { "type": "string" },
+          "planType": { "type": "string" },
+          "product": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "cpqid": { "type": "string" },
+                "segment": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "countryCode": { "type": "string" },
+                      "countryName": { "type": "string" }
+                    }
                   }
-                })
-                .then(response => {
-                  console.log(response.data);
-                })
-                .catch(error => {
-                  console.error(error);
-                });
-
-  /offercode/config:
-    get:
-      tags:
-        - offercode
-      summary: Get List of Available Offer Codes
-      parameters:
-        - name: secure
-          in: header
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/offerConfigResponse'
-          x-examples:
-            axios:
-              value: |
-                const axios = require('axios');
-                axios.get('https://testapi.auth1.avalara.com/ws/rest/sales/offercode/config', {
-                  headers: {
-                    'secure': 'your-secure-token-here'
-                  }
-                })
-                .then(response => {
-                  console.log(response.data);
-                })
-                .catch(error => {
-                  console.error(error);
-                });
-
-  /offercode/sold/{accountId}:
-    get:
-      tags:
-        - offercode
-      summary: Get offers sold to account
-      parameters:
-        - name: accountId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: secure
-          in: header
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-               $ref: '#/components/schemas/accountOfferCodeResponse'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-        '503':
-          $ref: '#/components/responses/503'
-          x-examples:
-            axios:
-              value: |
-                const axios = require('axios');
-                axios.get('https://testapi.auth1.avalara.com/ws/rest/sales/offercode/sold/{accountId}', {
-                  headers: {
-                    'secure': 'your-secure-token',
-                  }
-                })
-                .then(response => {
-                  console.log(response.data);
-                })
-                .catch(error => {
-                  console.error(error);
-                });
-
-components:
-  schemas:
-    CreateAPIResponse:
-      type: object
-      properties:
-        Connector:
-          type: object
-          properties:
-            author:
-              type: string
-            avalaraProduct:
-              type: string
-            cpqId:
-              type: string
-            customerAccountId:
-              type: string
-            managedBy:
-              type: string
-            name:
-              type: string
-            opportunityId:
-              type: string
-            opportunityLineItemId:
-              type: string
-            partnerTeamGrouping:
-              type: string
-            recordTypeId:
-              type: string
-            vibrancy:
-              type: string
-        Message:
-          type: string
-        Success:
-          type: string
-    onlineSalesApiMasterResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-        message:
-          type: string
-    offerConfigResponse:
-      type: object
-      properties:
-        options:
-          type: array
-          items:
-            type: object
-            properties:
-              offerId:
-                type: string
-              Term:
-                type: string
-              type:
-                type: string
-              interestInProductsServices:
-                type: string
-              methodOfContact:
-                type: string
-              offer:
-                type: string
-              currencyISOCode:
-                type: string
-              renewalTerm:
-                type: number
-              lineitems:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    pricebookEntryId:
-                      type: string
-                    billingPeriod:
-                      type: string
-                    productRatePlanTierId:
-                      type: string
-                    productName:
-                      type: string
-                    tier:
-                      type: number
-    sendToQueueOffercode:
-      type: object
-      properties:
-        addItems:
-          type: array
-          items:
-            type: object
-            properties:
-              productCode:
-                type: string
-        avataxId:
-          type: string
-        connectorId:
-          type: string
-        currencyCode:
-          type: string
-        customerAccountId:
-          type: string
-        discountPercent:
-          type: number
-          format: float
-        freeMonths:
-          type: string
-        includeSupport:
-          type: string
-        marketingContext:
-          type: object
-          properties:
-            opportunity:
-              type: object
-              properties:
-                campaignId:
-                  type: string
-                interestInProductsServices:
-                  type: string
-                leadSource:
-                  type: string
-                methodOfContact:
-                  type: string
-                partnerId:
-                  type: string
-                productsOfInterest:
-                  type: string
-                webProperty:
-                  type: string
-            account:
-              type: object
-              properties:
-                campaignId:
-                  type: string
-                interestInProductsServices:
-                  type: string
-                leadSource:
-                  type: string
-                methodOfContact:
-                  type: string
-                partnerId:
-                  type: string
-                productsOfInterest:
-                  type: string
-                webProperty:
-                  type: string
-            contact:
-              type: object
-              properties:
-                campaignId:
-                  type: string
-                interestInProductsServices:
-                  type: string
-                leadSource:
-                  type: string
-                methodOfContact:
-                  type: string
-                partnerId:
-                  type: string
-                productsOfInterest:
-                  type: string
-                webProperty:
-                  type: string
-        organizationId:
-          type: string
-        parentAvataxId:
-          type: string
-        parentCustomerAccountId:
-          type: string
-        paymentMethodId:
-          type: string
-        planType:
-          type: string
-        product:
-          type: array
-          items:
-            type: object
-            properties:
-              cpqid:
-                type: string
-              segment:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    countryCode:
-                      type: string
-                    countryName:
-                      type: string
-        quantity:
-          type: string
-        salesRepId:
-          type: string
-        tenantId:
-          type: string
-        tierNumber:
-          type: string
-    accountOfferCodeResponse:
-      type: array
-      items:
-        type: object
-        properties:
-          customerId:
-            type: string
-          offers:
-            type: array
-            items:
-              type: object
-              properties:
-                offerCode:
-                  type: string
-                createdDate: 
-                  type: string
-                correlationId:
-                  type: string
-                connectorId:
-                  type: string
-                dealinfoId:
-                  type: string
-                opportunityId:
-                  type: string
-                quoteId:
-                  type: string
-                orderId:
-                  type: string
-                orderProcessingStatus:
-                  type: string
-                contractId:
-                  type: string
-                contractStatus:
-                  type: string
-                fasterProvisioningSent:
-                  type: string
-          success:
-            type: string
-          errorMessage:
-            type: string
-  responses:
-    '400':
-      description: Bad Request
-    '401':
-      description: Unauthorized
-    '404':
-      description: Not Found - Invalid URL path.
-    '413':
-      description: Request Entity Too Large
-    '500':
-      description: Internal Server Error
-    '503':
-      description: Service Unavailable
-    default:
-      description: Unidentified Exception
+                }
+              }
+            }
+          },
+          "quantity": { "type": "string" },
+          "salesRepId": { "type": "string" },
+          "tenantId": { "type": "string" },
+          "tierNumber": { "type": "string" }
+        }
+      },
+      "accountOfferCodeResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "customerId": { "type": "string" },
+            "offers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "offerCode": { "type": "string" },
+                  "createdDate": { "type": "string" },
+                  "correlationId": { "type": "string" },
+                  "connectorId": { "type": "string" },
+                  "dealinfoId": { "type": "string" },
+                  "opportunityId": { "type": "string" },
+                  "quoteId": { "type": "string" },
+                  "orderId": { "type": "string" },
+                  "orderProcessingStatus": { "type": "string" },
+                  "contractId": { "type": "string" },
+                  "contractStatus": { "type": "string" },
+                  "fasterProvisioningSent": { "type": "string" }
+                }
+              }
+            },
+            "success": { "type": "string" },
+            "errorMessage": { "type": "string" }
+          }
+        }
+      }
+    },
+    "responses": {
+      "400": {
+        "description": "Bad Request"
+      },
+      "401": {
+        "description": "Unauthorized"
+      },
+      "404": {
+        "description": "Not Found - Invalid URL path."
+      },
+      "413": {
+        "description": "Request Entity Too Large"
+      },
+      "500": {
+        "description": "Internal Server Error"
+      },
+      "503": {
+        "description": "Service Unavailable"
+      },
+      "default": {
+        "description": "Unidentified Exception"
+      }
+    }
+  }
+}
