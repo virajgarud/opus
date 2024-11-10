@@ -29,13 +29,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateAPIResponse'
+          x-examples:
+            axios:
+              value: |
+                const axios = require('axios');
+                axios.post('https://testapi.auth1.avalara.com/ws/rest/sales/connector', {}, {
+                  headers: {
+                    'secure': 'your-secure-token-here'
+                  }
+                })
+                .then(response => {
+                  console.log(response.data);
+                })
+                .catch(error => {
+                  console.error(error);
+                });
+
   /new/{offerCode}:
     post:
       tags:
         - new
       summary: Sell offer to customer
-      description: Endpoint to sell a distinct offer to an existing customer by SF
-        account ID
+      description: Endpoint to sell a distinct offer to an existing customer by SF account ID
       parameters:
         - name: offerCode
           in: path
@@ -51,7 +66,6 @@ paths:
           required: true
           schema:
             type: string
-
       requestBody:
         content:
           application/json:
@@ -65,8 +79,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/onlineSalesApiMasterResponse'
+          x-examples:
+            axios:
+              value: |
+                const axios = require('axios');
+                axios.post('https://testapi.auth1.avalara.com/ws/rest/sales/new/{offerCode}', {
+                  // request body content
+                  avataxId: 'example-avatax-id',
+                  productCode: 'example-product-code',
+                }, {
+                  headers: {
+                    'x-correlation-id': 'your-correlation-id',
+                    'secure': 'your-secure-token'
+                  }
+                })
+                .then(response => {
+                  console.log(response.data);
+                })
+                .catch(error => {
+                  console.error(error);
+                });
 
-      x-codegen-request-body-name: send_To_Queue_Offercode_Json
   /offercode/config:
     get:
       tags:
@@ -85,6 +118,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/offerConfigResponse'
+          x-examples:
+            axios:
+              value: |
+                const axios = require('axios');
+                axios.get('https://testapi.auth1.avalara.com/ws/rest/sales/offercode/config', {
+                  headers: {
+                    'secure': 'your-secure-token-here'
+                  }
+                })
+                .then(response => {
+                  console.log(response.data);
+                })
+                .catch(error => {
+                  console.error(error);
+                });
+
   /offercode/sold/{accountId}:
     get:
       tags:
@@ -115,9 +164,25 @@ paths:
         '404':
           $ref: '#/components/responses/404'
         '500':
-          $ref: '#/components/responses/400'
+          $ref: '#/components/responses/500'
         '503':
           $ref: '#/components/responses/503'
+          x-examples:
+            axios:
+              value: |
+                const axios = require('axios');
+                axios.get('https://testapi.auth1.avalara.com/ws/rest/sales/offercode/sold/{accountId}', {
+                  headers: {
+                    'secure': 'your-secure-token',
+                  }
+                })
+                .then(response => {
+                  console.log(response.data);
+                })
+                .catch(error => {
+                  console.error(error);
+                });
+
 components:
   schemas:
     CreateAPIResponse:
@@ -152,159 +217,6 @@ components:
           type: string
         Success:
           type: string
-      description: '#PLAUNCH-6940'
-    SubscriptionRequest:
-      type: object
-      properties:
-        BillingaccountId:
-          type: string
-        additionalInformation:
-          type: string
-        address1:
-          type: string
-        address2:
-          type: string
-        alternateInvoiceOwner:
-          type: string
-        amount:
-          type: number
-          format: float
-        businessActivityType:
-          type: string
-        campaignId:
-          type: string
-        city:
-          type: string
-        companyName:
-          type: string
-        correlationId:
-          type: string
-        country:
-          type: string
-        customerAccountId:
-          type: string
-        email:
-          type: string
-        externalId:
-          type: string
-        firstName:
-          type: string
-        freeMonths:
-          type: string
-        interestInProductsServices:
-          type: string
-        lastName:
-          type: string
-        leadSource:
-          type: string
-        levelNumber:
-          type: number
-          format: double
-        lineItems:
-          type: array
-          items:
-            type: object
-            properties:
-              amendType:
-                type: string
-              billingPeriod:
-                type: string
-              chargeModel:
-                type: string
-              chargeNumber:
-                type: string
-              chargeType:
-                type: string
-              connectorId:
-                type: string
-              currency:
-                type: string
-              discountPercentage:
-                type: number
-                format: float
-              groupID:
-                type: string
-              listPrice:
-                type: number
-                format: float
-              offerCode:
-                type: string
-              overagePrice:
-                type: number
-                format: float
-              price:
-                type: string
-              priceFormat:
-                type: string
-              priceOverride:
-                type: string
-              pricebookEntryId:
-                type: string
-              productDescription:
-                type: string
-              productName:
-                type: string
-              productRatePlanChargeId:
-                type: string
-              productRatePlanId:
-                type: string
-              productRatePlanTierId:
-                type: string
-              quantity:
-                type: number
-                format: double
-              ratePlanChargeId:
-                type: string
-              ratePlanConnectorId:
-                type: string
-              ratePlanId:
-                type: string
-              ratePlanTierId:
-                type: string
-        methodOfContact:
-          type: string
-        offerCode:
-          type: string
-        organizationId:
-          type: string
-          description: An IAM-DS organizationId associated with the customerAccountId
-        partnerId:
-          type: string
-        payment:
-          type: object
-          properties:
-            paymentMethodId:
-              maxLength: 32
-              minLength: 32
-              type: string
-        phoneNumber:
-          type: string
-        platformVersion:
-          type: string
-        postalCode:
-          type: string
-        productsOfInterest:
-          type: string
-        salesPersonId:
-          type: string
-        state:
-          type: string
-        subscriptionId:
-          type: string
-        subscriptionTerm:
-          type: string
-        taxExempt:
-          type: string
-        tenantId:
-          type: string
-          description: An IAM-DS tenantId associated with the customerAccountId
-        tierNumber:
-          type: string
-        webProperty:
-          type: string
-      description: |-
-        API Request for Subscription Worflow.
-        #PLAUNCH-6940
     onlineSalesApiMasterResponse:
       type: object
       properties:
@@ -315,7 +227,6 @@ components:
               type: string
         message:
           type: string
-      description: '#PLAUNCH-6940'
     offerConfigResponse:
       type: object
       properties:
@@ -468,9 +379,6 @@ components:
           type: string
         tierNumber:
           type: string
-      description: |-
-        Input profile for the new sales send_to_Queue.
-        #PLAUNCH-6940
     accountOfferCodeResponse:
       type: array
       items:
@@ -480,34 +388,33 @@ components:
             type: string
           offers:
             type: array
-            minItems: 0
             items:
               type: object
               properties:
                 offerCode:
                   type: string
                 createdDate: 
-                  type: "string"
+                  type: string
                 correlationId:
-                  type: "string"
+                  type: string
                 connectorId:
-                  type: "string"
+                  type: string
                 dealinfoId:
-                  type: "string"
+                  type: string
                 opportunityId:
-                  type: "string"
+                  type: string
                 quoteId:
-                  type: "string"
+                  type: string
                 orderId:
-                  type: "string"
+                  type: string
                 orderProcessingStatus:
-                  type: "string"
+                  type: string
                 contractId:
-                  type: "string"
+                  type: string
                 contractStatus:
-                  type: "string"
+                  type: string
                 fasterProvisioningSent:
-                  type: "string"
+                  type: string
           success:
             type: string
           errorMessage:
