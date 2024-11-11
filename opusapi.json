@@ -20,6 +20,7 @@ paths:
       parameters:
         - name: secure
           in: header
+          required: true
           schema:
             type: string
       responses:
@@ -43,6 +44,13 @@ paths:
                 .then((res) => res.json())
                 .then((data) => console.log(data))
                 .catch((error) => console.error(error));
+
+    options:
+      summary: CORS preflight for /connector
+      operationId: optionsConnector
+      responses:
+        '200':
+          description: CORS preflight check successful
 
   /new/{offerCode}:
     post:
@@ -98,6 +106,13 @@ paths:
                 .then((data) => console.log(data))
                 .catch((error) => console.error(error));
 
+    options:
+      summary: CORS preflight for /new/{offerCode}
+      operationId: optionsNewOfferCode
+      responses:
+        '200':
+          description: CORS preflight check successful
+
   /offercode/config:
     get:
       tags:
@@ -130,6 +145,13 @@ paths:
                 .then((res) => res.json())
                 .then((data) => console.log(data))
                 .catch((error) => console.error(error));
+
+    options:
+      summary: CORS preflight for /offercode/config
+      operationId: optionsOfferCodeConfig
+      responses:
+        '200':
+          description: CORS preflight check successful
 
   /offercode/sold/{accountId}:
     get:
@@ -178,6 +200,13 @@ paths:
                 .then((res) => res.json())
                 .then((data) => console.log(data))
                 .catch((error) => console.error(error));
+
+    options:
+      summary: CORS preflight for /offercode/sold/{accountId}
+      operationId: optionsOfferCodeSold
+      responses:
+        '200':
+          description: CORS preflight check successful
 
 components:
   schemas:
