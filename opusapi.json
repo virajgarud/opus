@@ -45,27 +45,6 @@ paths:
                   console.error(error);
                 });
 
-    options:
-      summary: CORS pre-flight for /connector
-      operationId: optionsConnector
-      responses:
-        '200':
-          description: CORS preflight check successful
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Access-Control-Allow-Origin:
-                    type: string
-                    example: '*'
-                  Access-Control-Allow-Methods:
-                    type: string
-                    example: 'POST, OPTIONS'
-                  Access-Control-Allow-Headers:
-                    type: string
-                    example: 'Content-Type, Authorization, secure'
-          
   /new/{offerCode}:
     post:
       tags:
@@ -105,6 +84,7 @@ paths:
               value: |
                 const axios = require('axios');
                 axios.post('https://testapi.auth1.avalara.com/ws/rest/sales/new/{offerCode}', {
+                  // request body content
                   avataxId: 'example-avatax-id',
                   productCode: 'example-product-code',
                 }, {
@@ -119,27 +99,6 @@ paths:
                 .catch(error => {
                   console.error(error);
                 });
-
-    options:
-      summary: CORS pre-flight for /new/{offerCode}
-      operationId: optionsNewOfferCode
-      responses:
-        '200':
-          description: CORS preflight check successful
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Access-Control-Allow-Origin:
-                    type: string
-                    example: '*'
-                  Access-Control-Allow-Methods:
-                    type: string
-                    example: 'POST, OPTIONS'
-                  Access-Control-Allow-Headers:
-                    type: string
-                    example: 'Content-Type, Authorization, secure, x-correlation-id'
 
   /offercode/config:
     get:
@@ -174,27 +133,6 @@ paths:
                 .catch(error => {
                   console.error(error);
                 });
-
-    options:
-      summary: CORS pre-flight for /offercode/config
-      operationId: optionsOfferCodeConfig
-      responses:
-        '200':
-          description: CORS preflight check successful
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Access-Control-Allow-Origin:
-                    type: string
-                    example: '*'
-                  Access-Control-Allow-Methods:
-                    type: string
-                    example: 'GET, OPTIONS'
-                  Access-Control-Allow-Headers:
-                    type: string
-                    example: 'Content-Type, Authorization, secure'
 
   /offercode/sold/{accountId}:
     get:
@@ -244,27 +182,6 @@ paths:
                 .catch(error => {
                   console.error(error);
                 });
-
-    options:
-      summary: CORS pre-flight for /offercode/sold/{accountId}
-      operationId: optionsOfferCodeSold
-      responses:
-        '200':
-          description: CORS preflight check successful
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Access-Control-Allow-Origin:
-                    type: string
-                    example: '*'
-                  Access-Control-Allow-Methods:
-                    type: string
-                    example: 'GET, OPTIONS'
-                  Access-Control-Allow-Headers:
-                    type: string
-                    example: 'Content-Type, Authorization, secure'
 
 components:
   schemas:
