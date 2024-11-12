@@ -44,29 +44,6 @@ paths:
                 .catch(error => {
                   console.error(error);
                 });
-    options:
-      summary: Preflight for CORS
-      description: |
-        This preflight request returns the CORS headers for the POST /connector endpoint.
-      responses:
-        '200':
-          description: CORS preflight response
-          headers:
-            Access-Control-Allow-Origin:
-              description: Allowed origin for CORS.
-              schema:
-                type: string
-                example: '*'
-            Access-Control-Allow-Methods:
-              description: Allowed HTTP methods for CORS.
-              schema:
-                type: string
-                example: 'GET, POST, PUT, DELETE, OPTIONS'
-            Access-Control-Allow-Headers:
-              description: Allowed headers for CORS.
-              schema:
-                type: string
-                example: 'Content-Type, Authorization, secure'
 
   /new/{offerCode}:
     post:
@@ -122,29 +99,6 @@ paths:
                 .catch(error => {
                   console.error(error);
                 });
-    options:
-      summary: Preflight for CORS
-      description: |
-        This preflight request returns the CORS headers for the POST /new/{offerCode} endpoint.
-      responses:
-        '200':
-          description: CORS preflight response
-          headers:
-            Access-Control-Allow-Origin:
-              description: Allowed origin for CORS.
-              schema:
-                type: string
-                example: '*'
-            Access-Control-Allow-Methods:
-              description: Allowed HTTP methods for CORS.
-              schema:
-                type: string
-                example: 'GET, POST, PUT, DELETE, OPTIONS'
-            Access-Control-Allow-Headers:
-              description: Allowed headers for CORS.
-              schema:
-                type: string
-                example: 'Content-Type, Authorization, x-correlation-id, secure'
 
   /offercode/config:
     get:
@@ -179,29 +133,6 @@ paths:
                 .catch(error => {
                   console.error(error);
                 });
-    options:
-      summary: Preflight for CORS
-      description: |
-        This preflight request returns the CORS headers for the GET /offercode/config endpoint.
-      responses:
-        '200':
-          description: CORS preflight response
-          headers:
-            Access-Control-Allow-Origin:
-              description: Allowed origin for CORS.
-              schema:
-                type: string
-                example: '*'
-            Access-Control-Allow-Methods:
-              description: Allowed HTTP methods for CORS.
-              schema:
-                type: string
-                example: 'GET, POST, PUT, DELETE, OPTIONS'
-            Access-Control-Allow-Headers:
-              description: Allowed headers for CORS.
-              schema:
-                type: string
-                example: 'Content-Type, Authorization, secure'
 
   /offercode/sold/{accountId}:
     get:
@@ -236,29 +167,21 @@ paths:
           $ref: '#/components/responses/500'
         '503':
           $ref: '#/components/responses/503'
-    options:
-      summary: Preflight for CORS
-      description: |
-        This preflight request returns the CORS headers for the GET /offercode/sold/{accountId} endpoint.
-      responses:
-        '200':
-          description: CORS preflight response
-          headers:
-            Access-Control-Allow-Origin:
-              description: Allowed origin for CORS.
-              schema:
-                type: string
-                example: '*'
-            Access-Control-Allow-Methods:
-              description: Allowed HTTP methods for CORS.
-              schema:
-                type: string
-                example: 'GET, POST, PUT, DELETE, OPTIONS'
-            Access-Control-Allow-Headers:
-              description: Allowed headers for CORS.
-              schema:
-                type: string
-                example: 'Content-Type, Authorization, secure'
+          x-examples:
+            axios:
+              value: |
+                const axios = require('axios');
+                axios.get('https://testapi.auth1.avalara.com/ws/rest/sales/offercode/sold/{accountId}', {
+                  headers: {
+                    'secure': 'your-secure-token',
+                  }
+                })
+                .then(response => {
+                  console.log(response.data);
+                })
+                .catch(error => {
+                  console.error(error);
+                });
 
 components:
   schemas:
