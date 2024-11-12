@@ -8,7 +8,7 @@ info:
     - Test: testapi.auth1.avalara.com/ws/rest/sales
   version: v1
 servers:
-  - url: https://testapi.auth1.avalara.com/ws/rest/sales
+  - url: http://localhost:3000/ws/rest/sales
   - url: https://api.auth1.avalara.com/ws/rest/sales
 paths:
   /connector:
