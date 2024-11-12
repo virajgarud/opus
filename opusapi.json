@@ -5,10 +5,10 @@ info:
     API to enable sales automation
     Hosts:
     - Production: api.auth1.avalara.com/ws/rest/sales
-    - Test: localhost:3000/ws/rest/sales
+    - Test: testapi.auth1.avalara.com/ws/rest/sales
   version: v1
 servers:
-  - url: http://localhost:3000/ws/rest/sales
+  - url: https://testapi.auth1.avalara.com/ws/rest/sales
   - url: https://api.auth1.avalara.com/ws/rest/sales
 paths:
   /connector:
@@ -171,7 +171,7 @@ paths:
             axios:
               value: |
                 const axios = require('axios');
-                axios.get('http://localhost:3000/ws/rest/sales/offercode/sold/{accountId}', {
+                axios.get('https://testapi.auth1.avalara.com/ws/rest/sales/offercode/sold/{accountId}', {
                   headers: {
                     'secure': 'your-secure-token',
                   }
